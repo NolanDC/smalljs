@@ -1,0 +1,72 @@
+body {
+  background: #f2f2f2;
+}
+
+#turn {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0.02;
+  font-size: 2000px;
+  line-height: 800px;
+  font-family: verdana;
+  z-index: -1;
+  height: 100%;
+  overflow:hidden;
+  width: 100%;
+  text-align: center;
+}
+
+#wrapper {
+  width: 600px;
+  margin: 0 auto;
+  margin-top: 100px;
+}
+
+#tictactoe {
+  width: 600px;
+  height: 600px;
+}
+
+.square {
+  float: left;
+  width: 199px;
+  height: 199px;
+  display: block;
+  text-decoration: none;
+}
+
+.square:hover {
+  background: #f9f9f9;
+}
+
+.square-inner {
+  font-family: verdana;
+  font-size: 200px;
+  line-height: 190px;
+  text-align: center;
+  color: #aaa;
+  text-shadow: 2px 2px 0px rgba(255,255,255,1);
+}
+/*** CLEARFIX ***/
+
+.clearfix:after {
+  content: ".";
+  display: block;
+  clear: both;
+  visibility: hidden;
+  line-height: 0;
+  height: 0;
+}
+
+.clearfix {
+  display: inline-block;
+}
+
+html[xmlns] .clearfix {
+  display: block;
+}
+
+* html .clearfix {
+  height: 1%;
+}
