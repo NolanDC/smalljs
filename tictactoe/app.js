@@ -14,14 +14,14 @@ $(function() {
     if($inner.text() == ""){
       $inner.text(turn);
       $('#turn').text(turn == 'O' ? 'X' : 'O');
+      checkWinCondition();
     }
-    checkWinCondition()
     return false;
   });
 });
 
 function createBoard() {
-  var $ttt = $('#tictactoe').hide();
+  var $ttt = $('#tictactoe').html('').hide();
   $('#turn').text('O').hide();
 
   addSquares($ttt);
@@ -40,11 +40,14 @@ function addSquares($ttt) {
 }
 
 function checkWinCondition() {
+  var combo, initial, square;
   for(i = 0; i < combos.length; i++){
-    var combo = combos[i];
-    var initial = getSquare(combo[0]).text();
+    combo = combos[i];
+    initial = getText(combo[0]);
+    if(initial=="") continue;
     for(k = 1; k < combo.length; k++){
-      if(getSquare(combo[k]) != initial) continue;
+      square = combo[k];
+      if(getText(square) != initial) continue;
       if(k == combo.length-1) endGame(combo);
     }
   }
@@ -54,6 +57,13 @@ function getSquare(index) {
   return $('.square:eq(' + index + ')');
 }
 
+function getText(index) {
+  return getSquare(index).children('.square-inner').text();
+}
+
 function endGame(combo) {
   console.log(combo);
+  console.log(combo.length);
+  //for(i = 0; i < combo.length; i++) {
+  //}
 }
