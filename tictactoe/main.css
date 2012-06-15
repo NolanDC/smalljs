@@ -28,6 +28,25 @@ body {
   height: 600px;
 }
 
+#reset {
+  display: block;
+  text-decoration: none;
+  width: 600px;
+  height: 600px;
+  position: absolute;
+  background: rgba(255,255,255,0.9);
+  opacity: 0;
+  text-align:center;
+  font-size: 100px;
+  line-height: 560px;
+  font-family: verdana;
+  color: #999;
+}
+
+#reset:hover {
+  opacity: 0.9;
+}
+
 .square {
   float: left;
   width: 199px;

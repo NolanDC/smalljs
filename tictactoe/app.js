@@ -1,13 +1,9 @@
-var combos = [
-  [0,1,2],[3,4,5],[6,7,8],
-  [0,3,6],[1,4,7],[2,5,8],
-  [0,4,8],[2,4,6]
-]
+var combos = [ [0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6] ]
 
 $(function() {
 
   createBoard();
-  $('.square').click(function() {
+  $('.square').live('click', function() {
     var turn = $('#turn').text();
 
     $inner = $(this).children('.square-inner')
@@ -17,6 +13,12 @@ $(function() {
       checkWinCondition();
     }
     return false;
+  });
+
+  $('#reset').live('click', function() {
+    console.log('hi');
+    createBoard();
+    $(this).remove();
   });
 });
 
@@ -40,15 +42,18 @@ function addSquares($ttt) {
 }
 
 function checkWinCondition() {
-  var combo, initial, square;
+  var combo, initial;
+
   for(i = 0; i < combos.length; i++){
     combo = combos[i];
     initial = getText(combo[0]);
     if(initial=="") continue;
     for(k = 1; k < combo.length; k++){
-      square = combo[k];
-      if(getText(square) != initial) continue;
-      if(k == combo.length-1) endGame(combo);
+      if(getText(combo[k]) != initial) break;
+      if(k == combo.length-1) {
+        endGame(combo);
+        return;
+      }
     }
   }
 }
@@ -62,8 +67,9 @@ function getText(index) {
 }
 
 function endGame(combo) {
-  console.log(combo);
-  console.log(combo.length);
-  //for(i = 0; i < combo.length; i++) {
-  //}
+  for(i = 0; i < combo.length; i++){
+    getSquare(combo[i]).css('background-color', 'white');
+  }
+  $('#turn').text('');
+  $('#wrapper').prepend('<a href="#" id="reset">reset</a>');
 }
