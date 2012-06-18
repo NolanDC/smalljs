@@ -53,6 +53,7 @@ body {
   height: 199px;
   display: block;
   text-decoration: none;
+  overflow: hidden;
 }
 
 .square:hover {
