@@ -1,0 +1,51 @@
+body {
+  background: #f2f2f2;
+}
+
+
+#main-inner {
+  position: relative;
+  overflow: hidden;
+  height: 600px;
+}
+
+#modal {
+  position:absolute;
+  top: 100px;
+  left: 50%;
+  width: 400px;
+  height: 400px;
+  padding: 20px;
+  border: 10px solid #d5d5d5;
+
+  a {
+    border: 4px solid white;
+    position: absolute;
+    height: auto;
+    display: block;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px;
+    font-family: helvetica;
+    color: #999;
+    font-size: 150px;
+    text-decoration: none;
+    text-align: center;
+
+    &:hover {
+      border-color: #999;
+    }
+
+    &.alternate {
+      background: url(stripe.png);
+    }
+
+    .instructions {
+      font-size: 24px;
+      text-transform: uppercase;
+      font-style: italic;
+    }
+  }
+}
