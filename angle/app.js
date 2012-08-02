@@ -28,7 +28,8 @@ function mouseMove(e) {
 }
 
 function render() {
-  var radius = 100;
+  var radius = 300;
+  var inner_radius = 100;
   context.clearRect(0,0,swidth,sheight);
 
   context.beginPath();
@@ -37,28 +38,40 @@ function render() {
 
   var angle = Math.atan2(mouse.y - sheight/2, mouse.x-swidth/2);
   arcend = {x: Math.cos(angle)*radius+center.x, y: Math.sin(angle)*radius+center.y}
-  //console.log(angle);
-  /*context.beginPath();
-    
-    //context.moveTo(center.x, center.y);
-    //context.lineTo(mouse.x, mouse.y);
-    
-    context.moveTo(center.x, center.y);
-    context.lineTo(arcend.x, arcend.y);
-
-    context.moveTo(center.x+radius,center.y);
-    context.lineTo(center.x, center.y)
-
-    context.stroke();
-  context.closePath();*/
-
+  context.lineWidth= 2;
   context.beginPath();
     context.fillStyle="#e5fbff";
     context.moveTo(center.x, center.y);
-    context.arc(center.x, center.y, radius, 0, angle, false);
+    context.arc(center.x, center.y, radius, Math.PI, angle, false);
     context.fill();
     context.strokeStyle = "black";
+    context.moveTo(center.x, center.y);
+    context.lineTo(arcend.x, arcend.y);
     context.stroke();
   context.closePath();
 
+  context.fillStyle="#333";
+  context.moveTo(center.x, center.y);
+  context.beginPath();
+    context.arc(center.x, center.y, inner_radius, 0, Math.PI*2, false);
+    context.fill();
+    context.stroke();
+  context.closePath();
+
+  context.textAlign = "center";
+  context.fillStyle = "#eee";
+  context.font = "50px helvetica";
+
+
+  var deg = rad2deg(angle)+180
+  context.fillText(parseInt(deg), center.x, center.y+20);
+
+}
+
+function rad2deg(radians) {
+  return radians / Math.PI * 180;
+}
+
+function deg2rad(degrees) {
+  return degrees / 180 * Math.PI;
 }
