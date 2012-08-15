@@ -1,29 +1,136 @@
 var mainImage, imageData, newImageData, canvas, context;
+var mouse = {x: 0, y: 0};
+var arrays;
+var arrayIndex = 0;
+var cache;
 
 $(function() {
 	canvas = document.getElementById('canvas');
 	context = canvas.getContext('2d');
-	canvas.width = 512;
-	canvas.height = 512;
+
 	mainImage = createImageFromURL('./monalisa.jpg');
+
 	mainImage.onload = function() {
-		context.drawImage(mainImage, 0, 0);
-		smaller = processImage(512,512);
-		context.putImageData(smaller, 0, 0);
-		smaller = processImage(256,256);
-		context.putImageData(smaller, 0, 0);
-		smaller = processImage(128,128);		
+		canvas.width = this.width;
+		canvas.height = this.height;
+		context.drawImage(mainImage, 0, 0)
+		var imageData = context.getImageData(0,0, canvas.width, canvas.height)
+		arrays = createColorMaps(imageData)
+		cache = new Array(arrays.length)
+		render()
+		$('#main-inner').css('width', this.width + 'px')
+		$('#main-inner').css('margin', '0 auto')
+		$('#main-inner').css('margin-top', (window.innerHeight-this.width)/2 + 'px') 
 	}
+
+	$('#canvas').mousemove(function(e){
+		mouse.x = e.pageX;// - this.offsetLeft;
+		mouse.y = e.pageY - this.offsetTop;
+	})
+
+	Mousetrap.bind('up', function(e) {
+		e.preventDefault();
+		arrayIndex = constrain(0, window.arrays.length-1, arrayIndex+1);
+	renderOrCache(arrays, cache, arrayIndex);
+	})
+
+	Mousetrap.bind('down', function(e) {
+		e.preventDefault();
+		arrayIndex = constrain(0, window.arrays.length-1, arrayIndex-1);
+		renderOrCache(arrays, cache, arrayIndex);
+	})
 
 });
 
+function render() {
+	arrayIndex++
+	renderOrCache(arrays, cache, loop(arrayIndex, arrays.length-1));
+	setTimeout(render, 1000/15);
+}
+
+function loop(index, length) {
+	factor = Math.ceil(index/length)%2 == 0 ? 1 : -1
+	if(factor == 1 && index % length == 0) return length;
+	return ((index % length * factor) + length) % length
+}
+
+function renderOrCache(arrays, cache, index) {
+	if(cache[index] !== undefined) {
+		context.putImageData(cache[index], 0, 0);
+	} else {
+		cache[index] = pixelArrayToImageData(arrays[index], canvas.width, canvas.height);
+		context.putImageData(cache[index], 0, 0);
+	}
+}
+
+//Renders all rectangles in the given array, spread over a target of size [width][height]
+function pixelArrayToImageData(array, width, height) {
+	var w = array.length
+		, h = array[0].length
+		, tile_w = width / w
+		, tile_h = height / h
+		, newImageData = context.createImageData(width, height)
+
+	for(x = 0; x < w; x++) {
+		for(y = 0; y < h; y++) {
+			setPixelRange(newImageData, x * tile_w, y* tile_h, tile_w, tile_h, array[x][y])
+		}
+	}
+
+	return newImageData 
+}
+
 function createImageFromURL(url) {
-	var img = new Image();
-	img.src = url;
-	return img;
+	var img = new Image()
+	img.src = url
+	return img
 }
 
 
+
+/*
+For each power of 2 (represented by n) from log(width of image) to 0 , createColorMaps
+ 	will create an array of width & height 2^n
+Each element in the array represents the average color of the four pixels in the previous array
+ 	that would be covered by the current array element were its size double and placed on top
+
+ Example using integers instead of colors: 
+ [2, 10]
+ [4, 8]
+ => 
+ [6]
+*/
+function createColorMaps(imageData) {
+	var powers = logTwo(imageData.width);
+	console.log('Number of powers', powers);
+	arraySet = new Array(powers);
+	for(i = powers; i >= 0; i--) {
+		var size = Math.pow(2, i);
+		console.log(size);
+		arraySet[i] = new Array(size);
+		for(x = 0; x < size; x++) {
+			arraySet[i][x] = new Array(size);
+			for(y = 0; y < size; y++) {
+				if(i == powers) {
+					//Grab the first array from the actual image
+					arraySet[i][x][y] = getPixelAt(imageData, x, y)
+				}else{
+					var p1 = arraySet[i+1][x*2][y*2]
+					  , p2 = arraySet[i+1][x*2+1][y*2]
+					  , p3 = arraySet[i+1][x*2][y*2+1]
+					  , p4 = arraySet[i+1][x*2+1][y*2+1]
+					  , a1 = averageColors(p1, p2)
+					  , a2 = averageColors(p3, p4)
+					arraySet[i][x][y] = averageColors(a1, a2)
+				}
+			}
+		}
+	}
+	totalColor = arraySet[0][0][0]
+	return arraySet
+}
+
+/*
 function processImage(width, height) {
 	imageData = context.getImageData(0, 0, width, height);
 	newImageData = context.createImageData(width/2, height/2);
@@ -53,15 +160,13 @@ function processImage(width, height) {
 	drawImageWithRects(newImageData, 512);
 	return newImageData;
 }
+*/
 
 function drawImageWithRects(image, size) {
 	var data = image.data;
 	var scale = size/image.width;
-	console.log(scale);
-	console.log(image.width, image.height);
 	for(x = 0; x < image.width; x++) {
 		for(y = 0; y < image.height; y++) {
-			//if(random() < 0.1) console.log('ok');
 			c = getPixelAt(image, x, y);
 			context.fillStyle = "rgba("+c[0]+","+c[1]+","+c[2]+","+255 +")";
 			context.fillRect( x*scale, y*scale, scale, scale );
@@ -71,7 +176,7 @@ function drawImageWithRects(image, size) {
 
 
 function getPixelAt(image, x, y) {
-	var index = ((y*image.width)+x) * 4
+	var index = ((y*image.width)+x) * 4;
 	var imageData = image.data;
 	return [imageData[index], imageData[index+1], imageData[index+2]];
 }
@@ -106,11 +211,14 @@ function average(num1, num2) {
 	return (num1+num2)/2.0;
 }
 
-/*
-for (var i = 0, n = pix.length; i < n; i += 4) {
-    pix[i  ] = 255 - pix[i  ]; // red
-    pix[i+1] = 255 - pix[i+1]; // green
-    pix[i+2] = 255 - pix[i+2]; // blue
-    // i+3 is alpha (the fourth element)
+function logTwo(num) {
+	return Math.log(num) / Math.log(2);
 }
-*/
+
+function rgbString(r, g, b) {
+	return 'rgba(' + [parseInt(r),parseInt(g),parseInt(b),255].join(',') + ')';
+}
+
+function constrain(min, max, value) {
+	return Math.max(min, Math.min(max, value));
+}

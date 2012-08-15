@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Mouse Revealer</title>
+  <title>Crop</title>
 
   <link rel="stylesheet/less" type="text/css" href="../lib/css/reset.less">
   <link rel="stylesheet/less" type="text/css" href="global.less">
 
   <script type="text/javascript" src="../lib/js/jquery.js"></script>
   <script type="text/javascript" src="../lib/js/less.js"></script>
-  <script type="text/javascript" src="../lib/js/mousetrap.js"></script>  
+  <script type="text/javascript" src="../lib/js/mousetrap.js"></script>
+
+  <script type="text/javascript" src="lib.js"></script>
   <script type="text/javascript" src="app.js"></script>
 
 </head>
@@ -17,7 +19,10 @@
   <div id="main">
     <div id="main-inner">
 			<canvas id="canvas" width="200" height="200px">
-			</canvas>			
+			</canvas>		
+      <div id="cropped_image">
+
+      </div>	
     </div>
   </div>
 </body>
