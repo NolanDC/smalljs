@@ -4,6 +4,10 @@ var arrays;
 var arrayIndex = 0;
 var cache;
 
+//Represents, at each pixel, the index of the displayed pixel within the calculated arrays
+var displayLevel;
+var currentBlock;
+
 $(function() {
 	canvas = document.getElementById('canvas');
 	context = canvas.getContext('2d');
@@ -14,24 +18,32 @@ $(function() {
 		canvas.width = this.width;
 		canvas.height = this.height;
 		context.drawImage(mainImage, 0, 0)
+
 		var imageData = context.getImageData(0,0, canvas.width, canvas.height)
 		arrays = createColorMaps(imageData)
 		cache = new Array(arrays.length)
-		render()
+
+		displayLevel = Array2D(this.width, this.height, 0)
+		currentBlock = {x: 0, y: 0, w: 0, h: 0}
+
+		renderOrCache(arrays, cache, 0);
+
+		//context.putImageData(currentImage, 0, 0);
 		$('#main-inner').css('width', this.width + 'px')
 		$('#main-inner').css('margin', '0 auto')
 		$('#main-inner').css('margin-top', (window.innerHeight-this.width)/2 + 'px') 
 	}
 
 	$('#canvas').mousemove(function(e){
-		mouse.x = e.pageX;// - this.offsetLeft;
+		mouse.x = e.pageX - this.offsetLeft;
 		mouse.y = e.pageY - this.offsetTop;
+		mouseReveal();
 	})
 
 	Mousetrap.bind('up', function(e) {
 		e.preventDefault();
 		arrayIndex = constrain(0, window.arrays.length-1, arrayIndex+1);
-	renderOrCache(arrays, cache, arrayIndex);
+		renderOrCache(arrays, cache, arrayIndex);
 	})
 
 	Mousetrap.bind('down', function(e) {
@@ -41,6 +53,52 @@ $(function() {
 	})
 
 });
+
+function mouseReveal() {
+	var level = displayLevel[mouse.x][mouse.y]
+
+	if(inRect(mouse.x, mouse.y, currentBlock.x, currentBlock.y, currentBlock.w, currentBlock.h)) return
+	if(level >= arrays.length-1) return;
+
+	var show_level = level+1
+	var tile_size = mainImage.width / arrays[level].length
+	var mtx = Math.floor(mouse.x / (tile_size/2))
+	var mty = Math.floor(mouse.y / (tile_size/2))
+	var lx = Math.floor(mouse.x / (tile_size))
+		, ly = Math.floor(mouse.y / (tile_size))
+		, tx = lx*2
+		, ty = ly*2
+
+//Set the new display level
+	for(var px = lx*tile_size; px < (lx+1)*tile_size; px++) {
+		for(var py = ly*tile_size; py < (ly+1)*tile_size; py++) {
+			displayLevel[px][py] = show_level
+		}
+	}
+
+
+	//Draw the four squares to cover the square in question
+	var half_tile = tile_size/2
+	var c = arrays[show_level][tx][ty]
+	context.fillStyle = rgbString(c[0], c[1], c[2])
+	context.fillRect(lx*tile_size, ly*tile_size, half_tile, half_tile)
+
+	c = arrays[show_level][tx+1][ty]
+	context.fillStyle = rgbString(c[0], c[1], c[2])
+	context.fillRect(lx*tile_size+half_tile, ly*tile_size, half_tile, half_tile)
+
+	c = arrays[show_level][tx][ty+1]
+	context.fillStyle = rgbString(c[0], c[1], c[2])
+	context.fillRect(lx*tile_size, ly*tile_size+half_tile, half_tile, half_tile)	
+
+	c = arrays[show_level][tx+1][ty+1]
+	context.fillStyle = rgbString(c[0], c[1], c[2])
+	context.fillRect(lx*tile_size+half_tile, ly*tile_size+half_tile, half_tile, half_tile)	
+
+	//Set the new current block
+	currentBlock = {x: mtx*half_tile, y: mty*half_tile, w: half_tile, h: half_tile}
+
+}
 
 function render() {
 	arrayIndex++
@@ -102,11 +160,9 @@ Each element in the array represents the average color of the four pixels in the
 */
 function createColorMaps(imageData) {
 	var powers = logTwo(imageData.width);
-	console.log('Number of powers', powers);
 	arraySet = new Array(powers);
 	for(i = powers; i >= 0; i--) {
 		var size = Math.pow(2, i);
-		console.log(size);
 		arraySet[i] = new Array(size);
 		for(x = 0; x < size; x++) {
 			arraySet[i][x] = new Array(size);
@@ -204,7 +260,7 @@ function averageColors(color1, color2) {
 		average(color1[0], color2[0]), 
 		average(color1[1], color2[1]), 
 		average(color1[2], color2[2])
-	];
+	]
 }
 
 function average(num1, num2) {
@@ -221,4 +277,21 @@ function rgbString(r, g, b) {
 
 function constrain(min, max, value) {
 	return Math.max(min, Math.min(max, value));
+}
+
+function inRect(px, py, x, y, w, h) {
+	return (px >= x && px <= x+w && py >= y && py <= y+h);
+}
+
+function Array2D(width, height, value) {
+	var a = new Array(width);
+	for(var x = 0; x < width; x++) {
+		a[x] = new Array(height)
+		if( value !== undefined) {
+			for(var y = 0; y < height; y++) {
+				a[x][y] = value;
+			}	
+		}
+	}
+	return a
 }
