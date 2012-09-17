@@ -7,8 +7,21 @@
     <link rel="stylesheet" type="text/css" href="reset.css"/>
     <link rel="stylesheet" type="text/css" href="global.css"/>
 
-  	<script type="text/javascript" src="../lib/js/jquery.js"></script>  
-    <script src="./app.js"></script>        
+  	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script> 
+    <script src="./app.js"></script>      
+
+    <script type="text/javascript">
+	    var _gaq = _gaq || [];
+		  _gaq.push(['_setAccount', 'UA-10637742-1']);
+		  _gaq.push(['_setDomainName', '.nolandc.com']);
+		  _gaq.push(['_trackPageview']);
+
+		  (function() {
+		    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		  })();
+  	</script>
 	</head>
 	<body>
 
@@ -19,20 +32,20 @@
 	    		<div class="rectangle r1" href="#">
 	    			<div class="text">about</div>
 	    			<div class="information">
-	    				This is the personal website of Nolan Carroll, a web developer from Pittsburgh who studied Information Systems at Carnegie Mellon.
+	    				This is the personal website of Nolan Carroll, a web developer from Pittsburgh who studied Information Systems at <a href="http://cmu.edu" target="_blank">Carnegie Mellon University</a>
 	    			</div>
 	    		</div>
 
 	    		<div class="rectangle r2" id="s2" href="#">
 	    			<div class="text">work</div>
 	    			<div class="information">
-	    				<a href="http://www.nolandc.com/sandbox/fractals" target="_blank">Lindenmayer System Generator</a>
+	    				<a class="line" href="http://www.nolandc.com/sandbox/fractals" target="_blank">Lindenmayer System Generator</a>
 	    				<span class="desc">
-	    					A javascript tool that, given a set of replacement rules, will generate and render the resulting Lindenmayer System.
+	    					A javascript tool that, given a set of replacement rules, will generate and render the resulting Lindenmayer System
 	    				</span>
-	    				<a href="http://www.nolandc.com/smalljs/mouse_reveal/" target="_blank">Image Depixelator</a>
+	    				<a class="line" href="http://www.nolandc.com/smalljs/mouse_reveal/" target="_blank">Image Depixelator</a>
 	    				<span class="desc">
-	    					A javascript project that takes an image, pixellates it to a single block, and reveals more detail as the mouse is moved.
+	    					A javascript project that takes an image, pixellates it to a single block, and reveals more detail as the mouse is moved
 	    				</span>
 	    			</div>
 	    		</div>
@@ -40,7 +53,7 @@
 	    		<div class="rectangle r3" id="s3" href="#">
 	    			<div class="text">contact</div>
 	    			<div class="information fill">
-	    				<a href="https://github.com/NolanDC" target="_blank">github</a>
+	    				<a class="line" href="https://github.com/NolanDC" target="_blank">github</a>
 	    			</div>	    			
 	    		</div>
 	    	</div>
