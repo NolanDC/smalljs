@@ -1,0 +1,52 @@
+@font-face {  
+  font-family: edmondSans ;  
+  src: url( ./edmondSans.otf ) format("opentype");  
+}
+body {
+	background: #f2f2f2;
+}
+#rectangles {
+	margin-top: 100px;
+}
+#rectangles .rectangle {
+	float: left;
+	width: 20%;
+	margin-left: 10%;
+}
+#rectangles .rectangle.r1 .text {
+	xborder-bottom: 10px solid #a84b3a;
+}
+#rectangles .rectangle.r2 .text{
+	xborder-bottom: 10px solid #ff9f67;
+}
+/*#rectangles .rectangle.r3 .text{
+	border-bottom: 30px solid #233138;
+}*/
+#rectangles .rectangle.r3 .text{
+	xborder-bottom: 10px solid #4c646b;
+}
+#rectangles .rectangle .text {
+	font-size: 45px;
+	font-family: edmondSans;
+	padding-bottom: 5px;
+}
+#rectangles .rectangle .information {
+	font-family: arial;
+	color: #555;
+	font-size: 15px;
+	line-height: 17px;
+}
+#rectangles .information a {
+	color: #a84b3a;
+	display: block;
+	text-decoration: none;
+}
+#rectangles .information a:hover {
+	text-decoration: underline;
+}
+#rectangles .information .desc {
+	color: #555;
+	display: block;
+	font-size: 14px;
+	margin-bottom: 8px;
+}
