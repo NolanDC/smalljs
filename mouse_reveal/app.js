@@ -31,7 +31,7 @@ $(function() {
 		//context.putImageData(currentImage, 0, 0);
 		$('#main-inner').css('width', this.width + 'px')
 		$('#main-inner').css('margin', '0 auto')
-		$('#main-inner').css('margin-top', (window.innerHeight-this.width)/2 + 'px') 
+		$('#main-inner').css('margin-top', (window.innerHeight-this.width)/2 + 'px')
 	}
 
 	$('#canvas').mousemove(function(e){
@@ -75,7 +75,6 @@ function mouseReveal() {
 			displayLevel[px][py] = show_level
 		}
 	}
-
 
 	//Draw the four squares to cover the square in question
 	var half_tile = tile_size/2
@@ -185,38 +184,6 @@ function createColorMaps(imageData) {
 	totalColor = arraySet[0][0][0]
 	return arraySet
 }
-
-/*
-function processImage(width, height) {
-	imageData = context.getImageData(0, 0, width, height);
-	newImageData = context.createImageData(width/2, height/2);
-	
-	var data = imageData.data;		
-	
-	for(x = 0; x < width; x+=2) {
-		for(y = 0; y < height; y+=2) {
-			var p1 = getPixelAt(imageData, x, y);
-			var p2 = getPixelAt(imageData, x+1, y);
-			var p3 = getPixelAt(imageData, x, y+1);
-			var p4 = getPixelAt(imageData, x+1, y+1);
-			var a1 = averageColors(p1,p2);
-			var a2 = averageColors(p3,p4);
-			var final = averageColors(a1, a2);
-			//console.log(final);
-			var _x = x/2;
-			var _y = y/2;
-			setPixelRange(newImageData, _x, _y, 2, 2, final);					
-		}
-	}
-	
-	//console.log(newImageData);
-	//newImageData.data = subData;
-	console.log('done');
-	//context.putImageData(newImageData,0,0);
-	drawImageWithRects(newImageData, 512);
-	return newImageData;
-}
-*/
 
 function drawImageWithRects(image, size) {
 	var data = image.data;
