@@ -41,3 +41,8 @@ body {
 	font-size: 14px;
 	margin-bottom: 8px;
 }
+#rectangles .information .note {
+	font-size: 12px;
+	font-style: italic;
+	color: #777;
+}
