@@ -53,7 +53,7 @@ function Snake(x, y) {
 				this.toAdd += 5;
 				apples.remove(x,y);
 				apples.addRandom();
-				this.score+=10;
+				this.score+=1;
 				$('#meta').html("Score: " + this.score);
 			}
 			

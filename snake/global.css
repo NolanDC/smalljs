@@ -1,4 +1,11 @@
-
+body {
+	margin: 0;
+}
+#meta {
+	font-family: arial;
+	color: #333;
+	padding: 5px;
+}
 #canvas {
 	xborder: 10px solid black;
 }
