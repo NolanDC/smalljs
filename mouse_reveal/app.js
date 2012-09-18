@@ -39,15 +39,9 @@ function mouseReveal() {
 	context.fillStyle = rgbString(c[0], c[1], c[2])
 	context.fillRect(lx*tile_size+half_tile, ly*tile_size+half_tile, half_tile, half_tile)	
 
-	//Set the new current block
+	//Set the new currently hovered block
 	currentBlock = {x: mtx*half_tile, y: mty*half_tile, w: half_tile, h: half_tile}
 
-}
-
-function loop(index, length) {
-	factor = Math.ceil(index/length)%2 == 0 ? 1 : -1
-	if(factor == 1 && index % length == 0) return length;
-	return ((index % length * factor) + length) % length
 }
 
 function renderOrCache(arrays, cache, index) {
@@ -82,9 +76,9 @@ function createImageFromURL(url) {
 }
 
 /*
-For each power of 2 (represented by n) from log(width of image) to 0 , createColorMaps
+	For each power of 2 (represented by n) from log(width of image) to 0 , createColorMaps
  	will create an array of width & height 2^n
-Each element in the array represents the average color of the four pixels in the previous array
+	Each element in the array represents the average color of the four pixels in the previous array
  	that would be covered by the current array element were its size double and placed on top
 
  Example using integers instead of colors: 
