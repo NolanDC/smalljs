@@ -86,7 +86,6 @@ function update() {
 	if(state == "play") {
 		snake.move();		
 	}
-
 	render();
 }
 
@@ -100,7 +99,6 @@ function render() {
 	apples.render();
 
 }
-
 
 //inclusive for low + high
 function rand(low, high) {

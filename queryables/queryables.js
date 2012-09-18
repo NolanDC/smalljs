@@ -22,6 +22,3 @@ Queryables = {
 		return '?' + str_params.join('&')
 	}
 }
-
-console.log(Queryables.getAll())
-console.log(Queryables.compose({a: 2, b:3, nolan: 'carroll'}))

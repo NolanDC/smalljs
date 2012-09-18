@@ -1,64 +1,9 @@
-var mainImage, imageData, newImageData, canvas, context;
-var mouse = {x: 0, y: 0};
-var arrays;
-var arrayIndex = 0;
-var cache;
-
-//Represents, at each pixel, the index of the displayed pixel within the calculated arrays
-var displayLevel;
-var currentBlock;
-
-$(function() {
-	canvas = document.getElementById('canvas');
-	context = canvas.getContext('2d');
-
-	mainImage = createImageFromURL('./monalisa.jpg');
-
-	mainImage.onload = function() {
-		canvas.width = this.width;
-		canvas.height = this.height;
-		context.drawImage(mainImage, 0, 0)
-
-		var imageData = context.getImageData(0,0, canvas.width, canvas.height)
-		arrays = createColorMaps(imageData)
-		cache = new Array(arrays.length)
-
-		displayLevel = Array2D(this.width, this.height, 0)
-		currentBlock = {x: 0, y: 0, w: 0, h: 0}
-
-		renderOrCache(arrays, cache, 0);
-
-		//context.putImageData(currentImage, 0, 0);
-		$('#main-inner').css('width', this.width + 'px')
-		$('#main-inner').css('margin', '0 auto')
-		$('#main-inner').css('margin-top', (window.innerHeight-this.width)/2 + 'px')
-	}
-
-	$('#canvas').mousemove(function(e){
-		mouse.x = e.pageX - this.offsetLeft;
-		mouse.y = e.pageY - this.offsetTop;
-		mouseReveal();
-	})
-
-	Mousetrap.bind('up', function(e) {
-		e.preventDefault();
-		arrayIndex = constrain(0, window.arrays.length-1, arrayIndex+1);
-		renderOrCache(arrays, cache, arrayIndex);
-	})
-
-	Mousetrap.bind('down', function(e) {
-		e.preventDefault();
-		arrayIndex = constrain(0, window.arrays.length-1, arrayIndex-1);
-		renderOrCache(arrays, cache, arrayIndex);
-	})
-
-});
 
 function mouseReveal() {
 	var level = displayLevel[mouse.x][mouse.y]
 
 	if(inRect(mouse.x, mouse.y, currentBlock.x, currentBlock.y, currentBlock.w, currentBlock.h)) return
-	if(level >= arrays.length-1) return;
+	if(level >= arrays.length-1) return
 
 	var show_level = level+1
 	var tile_size = mainImage.width / arrays[level].length
@@ -69,7 +14,7 @@ function mouseReveal() {
 		, tx = lx*2
 		, ty = ly*2
 
-//Set the new display level
+	//Set the new display level
 	for(var px = lx*tile_size; px < (lx+1)*tile_size; px++) {
 		for(var py = ly*tile_size; py < (ly+1)*tile_size; py++) {
 			displayLevel[px][py] = show_level
@@ -97,12 +42,6 @@ function mouseReveal() {
 	//Set the new current block
 	currentBlock = {x: mtx*half_tile, y: mty*half_tile, w: half_tile, h: half_tile}
 
-}
-
-function render() {
-	arrayIndex++
-	renderOrCache(arrays, cache, loop(arrayIndex, arrays.length-1));
-	setTimeout(render, 1000/15);
 }
 
 function loop(index, length) {
@@ -133,7 +72,6 @@ function pixelArrayToImageData(array, width, height) {
 			setPixelRange(newImageData, x * tile_w, y* tile_h, tile_w, tile_h, array[x][y])
 		}
 	}
-
 	return newImageData 
 }
 
@@ -142,8 +80,6 @@ function createImageFromURL(url) {
 	img.src = url
 	return img
 }
-
-
 
 /*
 For each power of 2 (represented by n) from log(width of image) to 0 , createColorMaps
@@ -184,19 +120,6 @@ function createColorMaps(imageData) {
 	totalColor = arraySet[0][0][0]
 	return arraySet
 }
-
-function drawImageWithRects(image, size) {
-	var data = image.data;
-	var scale = size/image.width;
-	for(x = 0; x < image.width; x++) {
-		for(y = 0; y < image.height; y++) {
-			c = getPixelAt(image, x, y);
-			context.fillStyle = "rgba("+c[0]+","+c[1]+","+c[2]+","+255 +")";
-			context.fillRect( x*scale, y*scale, scale, scale );
-		}
-	}
-}
-
 
 function getPixelAt(image, x, y) {
 	var index = ((y*image.width)+x) * 4;
