@@ -1,0 +1,21 @@
+
+#controls_wrapper {
+	width: 25%;
+	float: left;
+}
+
+#controls {
+	padding: 10px;
+}
+
+#canvas_wrapper {
+	width: 75%;
+	float: right;
+}
+#meta {
+	padding: 10px;
+}
+
+#canvas {
+	margin: 0px auto;
+}

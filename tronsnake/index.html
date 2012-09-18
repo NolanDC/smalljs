@@ -8,7 +8,9 @@
 	<script src="board.js" type="text/javascript"></script>
 	<script src="snake.js" type="text/javascript"></script>
 	<script src="apples.js" type="text/javascript"></script>	
-  <script type="text/javascript">
+	
+	<script src="application.js" type="text/javascript"></script>
+	<script type="text/javascript">
     var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-10637742-1']);
         _gaq.push(['_trackPageview']);
@@ -18,19 +20,31 @@
       ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
     })();
-  </script>	
-	<script src="application.js" type="text/javascript"></script>
-	
+  </script>
+
+	<link rel="stylesheet" type="text/css" href="reset.css"/>
 	<link rel="stylesheet" type="text/css" href="global.css"/>
 </head>
 
 <body>
-	<div id="wrapper">
-	<div id="meta">0, 0</div>
-	<canvas id="canvas">
+	<div id="content_wrapper" class="clearfix">
 		
-	</canvas>
+		<div id="controls_wrapper">
+			<div id="controls">
+				Controls<br/>
+				Green: up, down, left, right<br/>
+				Blue: w, a, s, d
+			</div>
+		</div>
+		
+		<div id="canvas_wrapper">
+			<div id="meta">0, 0</div>
+			<canvas id="canvas">
+			</canvas>
+		</div>
+		
 	</div>
+	
 </body>
 
 </html>
