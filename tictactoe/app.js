@@ -16,7 +16,6 @@ $(function() {
   });
 
   $('#reset').live('click', function() {
-    console.log('hi');
     createBoard();
     $(this).remove();
   });
@@ -43,7 +42,6 @@ function addSquares($ttt) {
 
 function checkWinCondition() {
   var combo, initial;
-
   for(i = 0; i < combos.length; i++){
     combo = combos[i];
     initial = getText(combo[0]);
@@ -55,6 +53,10 @@ function checkWinCondition() {
         return;
       }
     }
+  }
+  if($('.square:contains("X"),.square:contains("O")').length==9) {
+    endGame([]);
+    return;
   }
 }
 
