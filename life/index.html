@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Conway's Game of Life</title>
+
+  <link rel="stylesheet/less" type="text/css" href="../lib/css/reset.less">
+  <link rel="stylesheet/less" type="text/css" href="global.less">
+
+  <script type="text/javascript" src="../lib/js/jquery.js"></script>
+  <script type="text/javascript" src="../lib/js/less.js"></script>
+  <script type="text/javascript" src="../lib/js/mousetrap.js"></script> 
+  <script type="text/javascript" src="setup.js"></script>  
+  <script type="text/javascript" src="app.js"></script>
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-10637742-1']);
+        _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+</head>
+
+<body>
+  <div id="main">
+    <div id="main-inner">
+      <div id="controls">
+        <a id="pause_play" class="button green" href="#">
+          run
+        </a>
+        <a id="clear" class="button red" href="#">
+          clear
+        </a>
+      </div>
+			<div id="grid">
+
+      </div>	
+    </div>
+  </div>
+</body>
+
+</html>
