@@ -66,7 +66,6 @@ var game = {
 			).length
 				
 			$tile.attr('rel', alive_neighbors)
-			//$tile.children('.tile_inner').text(alive_neighbors)
 		}		
 	},
 

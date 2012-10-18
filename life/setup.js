@@ -19,6 +19,10 @@ $(function() {
 		game.resurrect(this)
 	})
 
+	$('#overlay').on('click', function() {
+		$(this).fadeOut();
+	})
+
 	$('#pause_play').click(handlers.click_pause_play_button)
 	$('#clear').click(handlers.click_clear_button)
 	Mousetrap.bind('space', handlers.click_pause_play_button)
