@@ -9,6 +9,7 @@ var displayLevel;
 var currentBlock;
 
 $(function() {
+	var $main = $('#main').hide();
 	canvas = document.getElementById('canvas');
 	context = canvas.getContext('2d');
 
@@ -26,11 +27,12 @@ $(function() {
 		displayLevel = Array2D(this.width, this.height, 0)
 		currentBlock = {x: 0, y: 0, w: 0, h: 0}
 
-		renderOrCache(arrays, cache, 0);
+		renderOrCache(arrays, cache, 0)
 
 		$('#main-inner').css('width', this.width + 'px')
 		$('#main-inner').css('margin', '0 auto')
 		$('#main-inner').css('margin-top', (window.innerHeight-this.width)/2 + 'px')
+		$main.fadeIn()
 	}
 
 	$('#canvas').mousemove(function(e){
